@@ -104,7 +104,7 @@ void add() {
     pjsipName = checkNumberExists();
 
     if(useSimplePass == 1) {
-	printf("Using defaultpass \033[0;33m%s\033[0m\n", defaultPass);
+	printf("Using default post-pass \033[0;33m%s\033[0m\n", defaultPass);
 	pjPassword = calloc(strlen(pjsipName) + strlen(defaultPass) + 1, 1);
 	strcat(pjPassword, pjsipName);
 	strcat(pjPassword, defaultPass);
