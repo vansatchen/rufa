@@ -54,7 +54,6 @@ char *checkNumberExists() {
             if(flagCorrectName == 0) flagCorrectName = checkNumberExist(pjsipName); // Check that pjsipName exists in mysql
         }
     } while(flagCorrectName == 1 || flagCorrectName == 2);
-    free(pjsipName);
     return pjsipName;
 }
 
