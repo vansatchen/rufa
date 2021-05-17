@@ -52,9 +52,13 @@ void action(char *selfName, char *actionItem) {
 	printf("\tcreatedb\tCreate database and exit\n");
 	printf("\ttruncatedb\tTruncate database and exit\n");
 	printf("\tversion\t\tShow version and exit\n\n");
-    } else if(!strcmp(actionItem, "createdb")) createdb();
-    else if(!strcmp(actionItem, "truncatedb")) truncateAnswer();
-    else if(!strcmp(actionItem, "version")) {
+    } else if(!strcmp(actionItem, "createdb")) {
+	readConfig(); // Read config
+	createdb();
+    } else if(!strcmp(actionItem, "truncatedb")) {
+	readConfig(); // Read config
+	truncateAnswer();
+    } else if(!strcmp(actionItem, "version")) {
 	printf("Version: %s\n", rufaVersion);
 	printf("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n"
 		"This is free software: you are free to change and redistribute it.\n"
