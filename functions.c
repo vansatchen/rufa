@@ -270,6 +270,8 @@ void makeConfig() {
     printf("Name/number: ");
     pjsipName = checkNumberNotExists();
 
+    char *currentPassword = getCurrentOption(pjsipName, "password"); // get pass from mysql
+
     printf("Mac-address: ");
     int flagCorrectMac = 0;
     do {
@@ -322,7 +324,7 @@ void makeConfig() {
 			"<!--# Disable SIP NOTIFY Authentication -->\n"\
 			"    <P4428>1</P4428>\n"\
 			"  </config>\n"\
-			"</gs_provision>\n\n", pjMacAddress, pjsipName, pbxHost, pjsipName, pjsipName, pjsipName, defaultPass, pjsipName, \
+			"</gs_provision>\n\n", pjMacAddress, pjsipName, pbxHost, pjsipName, pjsipName, currentPassword, pjsipName, \
 			phoneAdminPass, enableVlan, vlan, dispLang, timeZone, ntpServer, phoneUserPass);
 
     char configNameStart[4] = "cfg", configNameEnd[5] = ".xml", configName[20] = "";
