@@ -6,3 +6,6 @@ all:
 install:
 	cp ./rufa /usr/bin/
 	cp -n ./rufa.conf /etc/
+
+uninstall:
+	rm -f /usr/bin/rufa
