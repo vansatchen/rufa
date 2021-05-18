@@ -53,10 +53,8 @@ void action(char *selfName, char *actionItem) {
 	printf("\ttruncatedb\tTruncate database and exit\n");
 	printf("\tversion\t\tShow version and exit\n\n");
     } else if(!strcmp(actionItem, "createdb")) {
-	readConfig(); // Read config
 	createdb();
     } else if(!strcmp(actionItem, "truncatedb")) {
-	readConfig(); // Read config
 	truncateAnswer();
     } else if(!strcmp(actionItem, "version")) {
 	printf("Version: %s\n", rufaVersion);

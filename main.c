@@ -6,12 +6,12 @@
 #include "functions.h"
 
 int main(int argc, char *argv[]) {
+    readConfig(); // Read config
     if(argc >= 2) {
 	action(argv[0], argv[1]);
 	return 0;
     }
 
-    readConfig(); // Read config
     checkServices(); // Check that mysqldb and curl available
     do {
 	mainChoice = menu();
