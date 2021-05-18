@@ -263,20 +263,29 @@ void additionalEdit() {
 }
 
 void makeConfig() {
-    char *pjsipName, *pjMacAddress;
-    size_t n = 0;
+    char *pjsipName, *pjMacAddress, *currentPassword;
+    size_t n1 = 0, n2 = 0;
     ssize_t macAddressLen;
 
     printf("Name/number: ");
     pjsipName = checkNumberNotExists();
 
-    char *currentPassword = getCurrentOption(pjsipName, "password"); // get pass from mysql
+    if(useSimplePass == 1) {
+	currentPassword = getCurrentOption(pjsipName, "password"); // get pass from mysql
+    } else {
+        do {
+            printf("Password: ");
+            getline(&currentPassword, &n2, stdin);
+            currentPassword[strcspn(currentPassword, "\n")] = 0;
+            if(strlen(currentPassword) == 0) printf("\033[0;31mPassword cannot be empty!\033[0m\n");
+        } while(strlen(currentPassword) == 0);
+    }
 
     printf("Mac-address: ");
     int flagCorrectMac = 0;
     do {
         if(flagCorrectMac == 1) printf("\033[0;31mMac-address must have 12 characters only, please enter another: \033[0m");
-	getline(&pjMacAddress, &n, stdin);
+	getline(&pjMacAddress, &n1, stdin);
 	pjMacAddress[strcspn(pjMacAddress, "\n")] = 0;
 
 	int f = 0, i = 0;
