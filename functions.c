@@ -385,14 +385,6 @@ void rebootRemotePhone(){
 
 	char *splitAnswer;
 	do {
-/*	    FILE *curlCommand;
-	    char curlAnswer[100];
-	    sprintf(queryReboot, "curl --silent \"http://%s/cgi-bin/api-sys_operation?passcode=%s&request=REBOOT\"", ipAddress, checkAdminPass);
-	    curlCommand = popen(queryReboot, "r");
-	    int lastchar = fread(curlAnswer, 1, 99, curlCommand);
-	    curlAnswer[lastchar] = '\0';
-	    pclose(curlCommand);*/
-
 	    char *curlAnswer = curlFunc(ipAddress, checkAdminPass);
 
 	    splitAnswer = strtok(curlAnswer, ",");

@@ -60,12 +60,5 @@ char *curlFunc(char *curlAnswer, char *checkAdminPass) {
     sprintf(queryCurl, "%s/cgi-bin/api-sys_operation?passcode=%s&request=REBOOT", curlAnswer, checkAdminPass);
     curlAnswer = handle_url(queryCurl);
 
-/*    if(data) {
-//        printf("%s\n", data);
-	curlReturn = data;
-	printf("curlReturn = %s\n", curlReturn);
-        free(data);
-    }*/
-//    printf("curlReturn = %s\n", curlReturn);
     return curlAnswer;
 }

@@ -44,19 +44,19 @@ char menuShow() {
 
 void action(char *selfName, char *actionItem) {
     extern char *rufaVersion;
-    if(!strcmp(actionItem, "help")) {
+    if(!strcmp(actionItem, "--help")) {
 	printf("Usage: %s [OPTION]\n", selfName);
 	printf("Realtime Users For Asterisk.\n\n");
 	printf("Options:\n");
-	printf("\thelp\t\tdisplay this help and exit\n");
-	printf("\tcreatedb\tCreate database and exit\n");
-	printf("\ttruncatedb\tTruncate database and exit\n");
-	printf("\tversion\t\tShow version and exit\n\n");
-    } else if(!strcmp(actionItem, "createdb")) {
+	printf("\t--help\t\tdisplay this help and exit\n");
+	printf("\t--createdb\tCreate database and exit\n");
+	printf("\t--truncatedb\tTruncate database and exit\n");
+	printf("\t--version\t\tShow version and exit\n\n");
+    } else if(!strcmp(actionItem, "--createdb")) {
 	createdb();
-    } else if(!strcmp(actionItem, "truncatedb")) {
+    } else if(!strcmp(actionItem, "--truncatedb")) {
 	truncateAnswer();
-    } else if(!strcmp(actionItem, "version")) {
+    } else if(!strcmp(actionItem, "--version")) {
 	printf("Version: %s\n", rufaVersion);
 	printf("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n"
 		"This is free software: you are free to change and redistribute it.\n"
