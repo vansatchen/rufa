@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "functions.h"
 
 extern char *defaultContext;
@@ -65,5 +66,8 @@ void action(char *selfName, char *actionItem) {
 		"There is NO WARRANTY, to the extent permitted by law.\n\n"
 		"Written by Nikolay Pavlov A.\n");
     }
-    else defaultContext = actionItem;
+    else {
+	defaultContext = actionItem;
+	printf("Using \033[0;33m%s\033[0m as default context\n\n", defaultContext);
+    }
 }
