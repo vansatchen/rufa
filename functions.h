@@ -26,3 +26,4 @@ void showAccountFromMysql();
 int readConfig();
 void checkServices();
 void checkMysqlConnect();
+char *curlFunc();
