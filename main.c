@@ -1,6 +1,5 @@
 // ToDo:
 // ^Configure
-// ^Use libcurl instead popen(curl ...)
 
 #include <stdio.h>
 #include "functions.h"
