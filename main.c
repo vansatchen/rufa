@@ -1,5 +1,6 @@
 // ToDo:
 // ^Configure
+// ^Use argument as default context
 
 #include <stdio.h>
 #include "functions.h"
