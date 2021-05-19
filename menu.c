@@ -2,6 +2,8 @@
 #include <string.h>
 #include "functions.h"
 
+extern char *defaultContext;
+
 char menu() {
     char *mainChoice = NULL;
     size_t n = 0;
@@ -46,12 +48,12 @@ void action(char *selfName, char *actionItem) {
     extern char *rufaVersion;
     if(!strcmp(actionItem, "--help")) {
 	printf("Usage: %s [OPTION]\n", selfName);
-	printf("Realtime Users For Asterisk.\n\n");
 	printf("Options:\n");
 	printf("\t--help\t\tdisplay this help and exit\n");
 	printf("\t--createdb\tCreate database and exit\n");
 	printf("\t--truncatedb\tTruncate database and exit\n");
-	printf("\t--version\t\tShow version and exit\n\n");
+	printf("\t--version\tShow version and exit\n\n");
+	printf("\tsomecontext\tUse 'somecontext' as default context\n\n");
     } else if(!strcmp(actionItem, "--createdb")) {
 	createdb();
     } else if(!strcmp(actionItem, "--truncatedb")) {
@@ -63,5 +65,5 @@ void action(char *selfName, char *actionItem) {
 		"There is NO WARRANTY, to the extent permitted by law.\n\n"
 		"Written by Nikolay Pavlov A.\n");
     }
-    else printf("Unrecognized option '%s'\nTry '%s help' for more information.\n\n", actionItem, selfName);
+    else defaultContext = actionItem;
 }

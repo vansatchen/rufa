@@ -59,7 +59,6 @@ int read_params(FILE *in, struct param *p, int max_params) {
 	    return -1;
 	}
 	strtrim(p->value);
-//	printf("name='%s' value='%s'\n", p->name, p->value);
 
 	if(strcmp(p->name, "dbhost") == 0) DB_HOST = p->value;
 	if(strcmp(p->name, "dbuser") == 0) DB_USER = p->value;
@@ -98,14 +97,6 @@ int read_params(FILE *in, struct param *p, int max_params) {
 
 	p++, max_params--, n++;
     }
-/*    printf("=== Finish variables from config file ===\n\n");
-    printf("=== Current settings ===\n");
-    printf("DB_HOST: %s\nDB_USER: %s\nDB_PASS: %s\nDB_NAME: %s\nDB_TABLE_ENDPOINTS: %s\nDB_TABLE_AORS: %s\nDB_TABLE_AUTHS: %s\nDB_TABLE_CONTACTS: %s\n"\
-	"defaultContext: %s\nuseSimplePass: %d\ndefaultPass: %s\nnumberLen: %d\npbxHost: %s\nphoneAdminPass: %s\nenableVlan: %s\nvlan: %s\n"\
-	"dispLang: %s\ntimeZone: %s\nntpServer: %s\nphoneUserPass: %s\ncheckPath: %s\ncheckAdminPass: %s\n\n", \
-	DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_TABLE_ENDPOINTS, DB_TABLE_AORS, DB_TABLE_AUTHS, DB_TABLE_CONTACTS, \
-	defaultContext, useSimplePass, defaultPass, numberLen, pbxHost, phoneAdminPass, enableVlan, vlan, dispLang, timeZone, \
-	ntpServer, phoneUserPass, checkPath, checkAdminPass);*/
 
     return n;
 }
