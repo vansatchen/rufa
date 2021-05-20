@@ -1,5 +1,6 @@
 // ToDo:
 // ^Configure
+// ^Show option with show only accounts by context
 
 #include <stdio.h>
 #include "functions.h"
