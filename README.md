@@ -21,12 +21,11 @@ Extra-options:
 * gcc
 * make
 * libmysqlclient
-* curl
 * git
 
 Install all dependencies:
 
-  sudo apt install gcc make libmysqlclient-dev curl git
+  sudo apt install gcc make libmysqlclient-dev git
 ## Building
   git clone https://github.com/vansatchen/rufa.git rufa
   
