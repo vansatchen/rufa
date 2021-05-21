@@ -1,7 +1,6 @@
 // ToDo:
 // ^Configure
 // ^Show option with show only accounts by context
-// ^Locale problems at get current callerid
 
 #include <stdio.h>
 #include "functions.h"

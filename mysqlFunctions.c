@@ -123,6 +123,7 @@ char *getCurrentOption(char *pjsipName, char *option) {
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
     mysql_set_character_set(con, "utf8");
+    mysql_query(con, "SET NAMES utf8");
     char queryAors[1024];
     if(strcmp(option, "context") == 0) sprintf(queryAors, "SELECT context FROM %s WHERE id = '%s'", DB_TABLE_ENDPOINTS, pjsipName);
     if(strcmp(option, "password") == 0) sprintf(queryAors, "SELECT password FROM %s WHERE id = '%s'", DB_TABLE_AUTHS, pjsipName);
