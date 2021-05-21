@@ -38,7 +38,8 @@ Install all dependencies:
 ## Config
 Config may be located at current directory as rufa.conf , at home directory as .rufarc, at /etc as rufa.conf
 ## Usage
-* rufa help - usage help
-* rufa createdb - create needing tables
-* rufa truncatedb - truncate tables
+* rufa --help - usage help
+* rufa --createdb - create needing tables
+* rufa --truncatedb - truncate tables
+* rufa somecontext - 'somecontext' as default context in interactive mode
 * rufa - interactive mode
