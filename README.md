@@ -21,12 +21,12 @@ Extra-options:
 * gcc
 * make
 * libmysqlclient
-* curl
+* libcurl4
 * git
 
 Install all dependencies:
 
-  sudo apt install gcc make libmysqlclient-dev curl git
+  sudo apt install gcc make libmysqlclient-dev libcurl4-openssl-dev git
 ## Building
   git clone https://github.com/vansatchen/rufa.git rufa
   
@@ -38,7 +38,8 @@ Install all dependencies:
 ## Config
 Config may be located at current directory as rufa.conf , at home directory as .rufarc, at /etc as rufa.conf
 ## Usage
-* rufa help - usage help
-* rufa createdb - create needing tables
-* rufa truncatedb - truncate tables
+* rufa --help - usage help
+* rufa --createdb - create needing tables
+* rufa --truncatedb - truncate tables
+* rufa somecontext - 'somecontext' as default context in interactive mode
 * rufa - interactive mode
