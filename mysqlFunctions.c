@@ -29,6 +29,7 @@ void checkMysqlConnect() {
         exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_close(con);
 }
 
 int checkNumberExist(char *pjsipName) {
@@ -57,6 +58,7 @@ void addToMysql(char *pjContext, char *pjsipName, char *pjPassword, char *pjCall
 	exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
     char queryAors[1024];
     sprintf(queryAors, "INSERT INTO %s (id,max_contacts) VALUES ('%s','1')", DB_TABLE_AORS, pjsipName);
     if(mysql_query(con, queryAors)) finish_with_error(con);
@@ -96,6 +98,7 @@ void showByOption(char *option) {
         exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
     char queryShow[1024];
 /*    sprintf(queryShow, "mysql --login-path=asterisk -u " DB_USER " -p" DB_PASS " -h " DB_HOST " -D " DB_NAME \
                         " -e \"SELECT " DB_TABLE_ENDPOINTS ".context," DB_TABLE_AUTHS ".username," DB_TABLE_AUTHS ".password," \
@@ -119,6 +122,7 @@ char *getCurrentOption(char *pjsipName, char *option) {
 	exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
     char queryAors[1024];
     if(strcmp(option, "context") == 0) sprintf(queryAors, "SELECT context FROM %s WHERE id = '%s'", DB_TABLE_ENDPOINTS, pjsipName);
     if(strcmp(option, "password") == 0) sprintf(queryAors, "SELECT password FROM %s WHERE id = '%s'", DB_TABLE_AUTHS, pjsipName);
@@ -144,6 +148,7 @@ void updateBaseToMysql(char *pjContext, char *pjsipName, char *pjNewName, char *
 	exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
     char queryAors[1024];
     sprintf(queryAors, "UPDATE %s SET id = '%s' WHERE id = '%s'", DB_TABLE_AORS, pjNewName, pjsipName);
     if(mysql_query(con, queryAors)) finish_with_error(con);
@@ -192,6 +197,7 @@ void showAccountFromMysql(char *pjsipName) {
 	exit(1);
     }
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
     char queryShowAccount[1024];
     sprintf(queryShowAccount, "SELECT %s.context,%s.username,%s.password,%s.callerid,%s.user_agent,%s.via_addr,\
 			%s.max_contacts,%s.transport,%s.allow,%s.media_encryption FROM %s INNER JOIN %s USING(id) \

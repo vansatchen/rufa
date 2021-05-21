@@ -1,7 +1,7 @@
 // ToDo:
 // ^Configure
 // ^Show option with show only accounts by context
-// ^Data too long for column 'callerid' at row 1 -- locale problems
+// ^Locale problems at get current callerid
 
 #include <stdio.h>
 #include "functions.h"
