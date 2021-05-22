@@ -159,7 +159,7 @@ void baseEdit() {
     printf("Group(context)[%s]: ", currentContext);
     getline(&pjContext, &n0, stdin);
     pjContext[strcspn(pjContext, "\n")] = 0;
-    if(strlen(pjContext) == 0) strcpy(pjContext, currentContext); // If pjContext empty, set to correntContext
+    if(strlen(pjContext) == 0) strcpy(pjContext, currentContext); // If pjContext empty, set to currentContext
 
     printf("New name/number[%s]: ", pjsipName);
     getline(&pjNewName, &n1, stdin);
@@ -437,4 +437,16 @@ void checkServices() {
 	curlFound = 0;
     } else curlFound = 1;
     fclose(curlfp);
+}
+
+void showByContext() {
+    char *pjContext;
+    size_t n = 0;
+
+    printf("Group(context)[%s]: ", defaultContext);
+    getline(&pjContext, &n, stdin);
+    pjContext[strcspn(pjContext, "\n")] = 0;
+    if(strlen(pjContext) == 0) strcpy(pjContext, defaultContext); // If pjContext empty, set to currentContext
+
+    showByContextMysql(pjContext);
 }

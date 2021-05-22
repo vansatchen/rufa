@@ -39,7 +39,8 @@ char menuShow() {
     printf("2) Show by number\n");
     printf("3) Show by callerid\n");
     printf("4) Show by status\n");
-    printf("5) Show account\n");
+    printf("5) Show context members\n");
+    printf("6) Show account\n");
     printf("Enter your choice: ");
     getline(&showChoice, &n, stdin);
     return *showChoice;

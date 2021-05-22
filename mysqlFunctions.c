@@ -14,6 +14,7 @@ extern char *DB_TABLE_ENDPOINTS;
 extern char *DB_TABLE_AORS;
 extern char *DB_TABLE_AUTHS;
 extern char *DB_TABLE_CONTACTS;
+extern char *defaultContext;
 
 void finish_with_error(MYSQL *con) {
     fprintf(stderr, "%s\n", mysql_error(con));
@@ -230,4 +231,24 @@ void showAccountFromMysql(char *pjsipName) {
 
     mysql_free_result(result);
     mysql_close(con);
+}
+
+void showByContextMysql(char *context) {
+    MYSQL *con = mysql_init(NULL);
+    if(con == NULL) {
+        fprintf(stderr, "mysql_init() failed\n");
+        exit(1);
+    }
+    if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    printf("Using context \033[0;33m%s\033[0m\n\n", context);
+    mysql_set_character_set(con, "utf8");
+    char queryShow[1024];
+    sprintf(queryShow, "mysql --login-path=asterisk -u %s -p%s -h %s -D %s -e \
+                        \"SELECT %s.context,%s.username,%s.callerid,%s.via_addr FROM %s INNER JOIN %s USING(id) \
+                        LEFT JOIN %s ON %s.username = %s.endpoint WHERE %s.context = '%s' ORDER BY username;\" 2>/dev/null", \
+                        DB_USER, DB_PASS, DB_HOST, DB_NAME, DB_TABLE_ENDPOINTS, DB_TABLE_AUTHS, DB_TABLE_ENDPOINTS, \
+                        DB_TABLE_CONTACTS, DB_TABLE_AUTHS, DB_TABLE_ENDPOINTS, DB_TABLE_CONTACTS, DB_TABLE_AUTHS, DB_TABLE_CONTACTS, DB_TABLE_ENDPOINTS, context);
+    system(queryShow);
+    mysql_close(con);
+    return;
 }

@@ -27,3 +27,5 @@ int readConfig();
 void checkServices();
 void checkMysqlConnect();
 char *curlFunc();
+void showByContext();
+void showByContextMysql();

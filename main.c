@@ -1,6 +1,6 @@
 // ToDo:
 // ^Configure
-// ^Show option with show only accounts by context
+// ^Use menu of available contexts for show only accounts by context
 
 #include <stdio.h>
 #include "functions.h"
@@ -45,7 +45,11 @@ int main(int argc, char *argv[]) {
 			showByOption("via_addr DESC");
 			printf("\n");
 			break;
-		    case '5': // Show account
+		    case '5': // Show context members
+			showByContext();
+			printf("\n");
+			break;
+		    case '6': // Show account
 			showAccount();
 			printf("\n");
 			break;
