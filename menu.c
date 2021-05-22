@@ -55,16 +55,20 @@ void action(char *selfName, char *actionItem) {
 	printf("\t--truncatedb\tTruncate database and exit\n");
 	printf("\t--version\tShow version and exit\n\n");
 	printf("\tsomecontext\tUse 'somecontext' as default context\n\n");
+	exit(0);
     } else if(!strcmp(actionItem, "--createdb")) {
 	createdb();
+	exit(0);
     } else if(!strcmp(actionItem, "--truncatedb")) {
 	truncateAnswer();
+	exit(0);
     } else if(!strcmp(actionItem, "--version")) {
 	printf("Version: %s\n", rufaVersion);
 	printf("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n"
 		"This is free software: you are free to change and redistribute it.\n"
 		"There is NO WARRANTY, to the extent permitted by law.\n\n"
 		"Written by Nikolay Pavlov A.\n");
+	exit(0);
     } else {
 	defaultContext = actionItem;
 	printf("Using \033[0;33m%s\033[0m as default context\n\n", defaultContext);
