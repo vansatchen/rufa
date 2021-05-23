@@ -1,6 +1,5 @@
 // ToDo:
 // ^Configure
-// ^Fix double available contexts
 
 #include <stdio.h>
 #include "functions.h"

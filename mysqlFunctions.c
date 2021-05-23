@@ -285,6 +285,7 @@ char *getAvailContexts() {
 
     mysql_free_result(result);
     mysql_close(con);
+    strcpy(context, ""); // Clear context variable
 
     return availContexts;
 }
