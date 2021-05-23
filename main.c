@@ -1,6 +1,6 @@
 // ToDo:
 // ^Configure
-// ^Use menu of available contexts for show only accounts by context
+// ^Fix double available contexts
 
 #include <stdio.h>
 #include "functions.h"
