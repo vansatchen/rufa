@@ -9,7 +9,8 @@ users placed in mysql database.
 Also allows to show users by:
 * number,
 * callerid,
-* status.
+* status,
+* single account.
 
 Extra-options: 
 * making configs for provisioning grandstream gxp-1xxx, gxp-2xxx. At this time only for single account.
