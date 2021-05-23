@@ -252,3 +252,39 @@ void showByContextMysql(char *context) {
     mysql_close(con);
     return;
 }
+
+char *getAvailContexts() {
+    char context[1024], field[16356];
+
+    MYSQL *con = mysql_init(NULL);
+    if(con == NULL) {
+        fprintf(stderr, "mysql_init() failed\n");
+        exit(1);
+    }
+    if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
+    mysql_query(con, "SET NAMES utf8");
+    char querySelect[1024];
+    sprintf(querySelect, "SELECT context FROM %s ORDER BY context", DB_TABLE_ENDPOINTS);
+    if(mysql_query(con, querySelect)) finish_with_error(con);
+
+    MYSQL_RES *result = mysql_store_result(con);
+    if(result == NULL) finish_with_error(con);
+
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result))) {
+	if(strcmp(field, row[0])) {
+	    strcpy(field, row[0]);
+	    strcat(context, row[0]);
+	    strcat(context, " ");
+	}
+    }
+
+    char *availContexts = malloc(strlen(context) + 1);
+    strcpy(availContexts, context);
+
+    mysql_free_result(result);
+    mysql_close(con);
+
+    return availContexts;
+}

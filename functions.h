@@ -29,3 +29,4 @@ void checkMysqlConnect();
 char *curlFunc();
 void showByContext();
 void showByContextMysql();
+char *getAvailContexts();

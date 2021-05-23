@@ -443,10 +443,30 @@ void showByContext() {
     char *pjContext;
     size_t n = 0;
 
-    printf("Group(context)[%s]: ", defaultContext);
+    char *availContexts = getAvailContexts();
+    char *context = strdup(availContexts);
+    int contextCount = 1;
+    char *contextVar[256];
+    contextVar[1] = strtok(context, " ");
+    printf("\nAvailable contexts:\n1) %s\n", contextVar[1]);
+    while(contextVar != NULL) {
+	contextCount++;
+	contextVar[contextCount] = strtok(NULL, " ");
+	if(contextVar[contextCount] == NULL) break;
+	printf("%d) %s\n", contextCount, contextVar[contextCount]);
+    }
+
+    printf("Select context[%s]: ", defaultContext);
     getline(&pjContext, &n, stdin);
     pjContext[strcspn(pjContext, "\n")] = 0;
     if(strlen(pjContext) == 0) strcpy(pjContext, defaultContext); // If pjContext empty, set to currentContext
 
+    int f = atoi(pjContext);
+    for(int i = 1; i < contextCount; i++) {
+	if(i == f) pjContext = contextVar[i];
+    }
     showByContextMysql(pjContext);
+
+    free(availContexts);
+    free(context);
 }
