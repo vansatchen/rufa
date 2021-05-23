@@ -23,7 +23,6 @@ Extra-options:
 * make
 * libmysqlclient
 * libcurl4
-* git
 
 Install all dependencies:
 
