@@ -297,7 +297,6 @@ void makeConfig() {
 	pjMacAddress[i] = '\0';
 
 	macAddressLen = strlen(pjMacAddress);
-	printf("%ld\n", macAddressLen);
         if(macAddressLen <= 11 || macAddressLen >= 13) {
 	    flagCorrectMac = 1;
 	} else {
