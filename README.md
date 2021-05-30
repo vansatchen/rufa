@@ -43,3 +43,13 @@ Config may be located at current directory as rufa.conf , at home directory as .
 * rufa --truncatedb - truncate tables
 * rufa somecontext - 'somecontext' as default context in interactive mode
 * rufa - interactive mode
+## Creating database
+  mysql -u root -p
+  
+  create database asteriskdb;
+  
+  GRANT ALL PRIVILEGES ON asteriskdb.* TO asteriskuser@localhost IDENTIFIED BY 'asteriskpass';
+
+  FLUSH PRIVILEGES;
+## Creating needed tables
+  rufa --createdb
