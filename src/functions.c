@@ -19,7 +19,7 @@ extern char *phoneUserPass;
 extern char checkPath[100];
 extern char *checkAdminPass;
 extern int useSimplePass;
-int curlFound = 0;
+//int curlFound = 0;
 extern char *curlPath;
 
 void printDone() {

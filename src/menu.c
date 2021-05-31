@@ -14,8 +14,9 @@ char menu() {
     printf("4) Show\n");
     printf("5) Edit\n");
     printf("6) Make config\n");
-    extern int *curlFound;
-    if(curlFound) printf("7) Reboot remote phone\n");
+//    extern int *curlFound;
+//    if(curlFound) printf("7) Reboot remote phone\n");
+    printf("7) Reboot remote phone\n");
     printf("Enter your choice: ");
     getline(&mainChoice, &n, stdin);
     return *mainChoice;
