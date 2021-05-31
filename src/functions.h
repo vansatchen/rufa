@@ -30,3 +30,4 @@ char *curlFunc();
 void showByContext();
 void showByContextMysql();
 char *getAvailContexts();
+void menuDriver();
