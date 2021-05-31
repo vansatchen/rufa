@@ -430,12 +430,12 @@ void showAccount() {
 
 void checkServices() {
     checkMysqlConnect();
-    FILE *curlfp;
+/*    FILE *curlfp;
     if ((curlfp = fopen(curlPath, "r")) == NULL) {
 	printf("\033[0;33mCurl not found. Correct valid path to config or install it for option \"Reboot remote phone\"\033[0m\n");
 	curlFound = 0;
     } else curlFound = 1;
-    fclose(curlfp);
+    fclose(curlfp);*/
 }
 
 void showByContext() {

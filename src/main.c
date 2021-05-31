@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     if(argc >= 2) action(argv[0], argv[1]);
 
     printf("Use \033[0;33m%s --help\033[0m for more information.\n\n", argv[0]);
-    checkServices(); // Check that mysqldb and curl available
+    checkServices(); // Check that mysqldb available
     do {
 	mainChoice = menu();
 	switch (mainChoice) {
