@@ -36,6 +36,7 @@ char *phoneUserPass = "user123"; // User password for WUI phone for config
 char checkPath[100] = "/configs/"; // Path to check exists configs
 // Other defaults
 char *checkAdminPass = "admin1"; // Check current admin pass
+int pseudoGui = 0; // Run with ncurses GUI
 
 struct param {
     char name[MAX_LEN];

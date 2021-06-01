@@ -4,6 +4,7 @@
 #include "functions.h"
 
 extern char *defaultContext;
+extern int pseudoGui;
 
 char menu() {
     char *mainChoice = NULL;
@@ -71,6 +72,8 @@ void action(char *selfName, char *actionItem) {
 		"There is NO WARRANTY, to the extent permitted by law.\n\n"
 		"Written by Nikolay Pavlov A.\n");
 	exit(0);
+    } else if(!strcmp(actionItem, "--simple")) pseudoGui = 0;
+    } else if(!strcmp(actionItem, "--wins")) pseudoGui = 1;
     } else {
 	defaultContext = actionItem;
 	printf("Using \033[0;33m%s\033[0m as default context\n\n", defaultContext);
