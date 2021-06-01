@@ -34,9 +34,8 @@ char *timeZone = "MTZ-5MDT-5,M4.1.0,M11.1.0"; // Time zone for config
 char *ntpServer = "pool.ntp.org"; // NTP server for config
 char *phoneUserPass = "user123"; // User password for WUI phone for config
 char checkPath[100] = "/configs/"; // Path to check exists configs
-char *checkAdminPass = "admin1"; // Check current admin pass
 // Other defaults
-char *curlPath = "/usr/bin/curl"; // Path to curl
+char *checkAdminPass = "admin1"; // Check current admin pass
 
 struct param {
     char name[MAX_LEN];
