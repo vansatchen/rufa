@@ -93,8 +93,6 @@ int read_params(FILE *in, struct param *p, int max_params) {
 	if(strcmp(p->name, "phonecheckpath") == 0) strcpy(checkPath, p->value);
 	if(strcmp(p->name, "phonecheckadminpass") == 0) checkAdminPass = p->value;
 
-	if(strcmp(p->name, "curlpath") == 0) curlPath = p->value;
-
 	p++, max_params--, n++;
     }
 
