@@ -11,7 +11,8 @@ int main(int argc, char *argv[]) {
 
     printf("Use \033[0;33m%s --help\033[0m for more information.\n\n", argv[0]);
     checkServices(); // Check that mysqldb available
-    do {
+    menuDriver();
+/*    do {
 	mainChoice = menu();
 	switch (mainChoice) {
 	    case '1': // Quit
@@ -89,6 +90,6 @@ int main(int argc, char *argv[]) {
 		printf("Operation not supported yet!\n");
 		printf("---------\n");
 	}
-    } while(mainChoice != '1');
+    } while(mainChoice != '1');*/
     return 0;
 }
