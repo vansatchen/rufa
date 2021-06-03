@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
 
     checkServices(); // Check that mysqldb available
     if(pseudoGui == 0) menuDriver();
+    if(pseudoGui == 1) wins();
 
     return 0;
 }
