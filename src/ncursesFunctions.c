@@ -3,6 +3,7 @@
 #include <string.h>
 #include <form.h>
 #include <ctype.h>
+#include "functions.h"
 
 #define ESCAPE 27
 
@@ -11,6 +12,7 @@ FORM  *addForm;
 WINDOW *addPopup;
 
 void draw_menubar(WINDOW *menubar);
+void draw_titlebar();
 void popupKey();
 void helpMenu();
 void addMenu();
@@ -18,7 +20,7 @@ static void driver();
 void delPopup();
 
 int wins() {
-    WINDOW *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin;
+    WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin;
     // Start ncurses finctionality
     initscr();
     start_color();
@@ -30,19 +32,21 @@ int wins() {
     noecho();
     keypad(stdscr, TRUE);
     // Screen size & background
-    int row, col;
-    getmaxyx(stdscr, row, col);
+    int rows, col;
+    getmaxyx(stdscr, rows, col);
     bkgd(COLOR_PAIR(1));
-    mvwprintw(stdscr, 0, col - 20, "Row: %d, Col: %d", row, col);
+//    mvwprintw(stdscr, 0, col - 20, "Rows: %d, Col: %d", rows, col);
     // Panel & main window
-    menubar = subwin(stdscr, 1, col, 0, 0);
-    mainWin = subwin(stdscr, row - 1, col, 1, 0);
+    titlebar = subwin(stdscr, 1, col, 0, 0);
+    menubar = subwin(stdscr, 1, col, rows - 1, 0);
+    mainWin = subwin(stdscr, rows - 2, col, 1, 0);
     draw_menubar(menubar);
+    draw_titlebar(titlebar, col);
     // Columns and boards
     contextWin = derwin(mainWin, 0, 20, 0, 0);
-    numberWin = derwin(mainWin, 0, 20, 0, 19);
-    calleridWin = derwin(mainWin, 0, col - 80, 0, 38);
-    addressWin = derwin(mainWin, 0, 40, 0, col - 43);
+    numberWin = derwin(mainWin, 0, 12, 0, 19);
+    calleridWin = derwin(mainWin, 0, col - 50, 0, 30);
+    addressWin = derwin(mainWin, 0, 20, 0, col - 20);
     box(contextWin, 0, 0);
     box(numberWin, 0, 0);
     box(calleridWin, 0, 0);
@@ -53,16 +57,18 @@ int wins() {
     mvwprintw(numberWin, 0, 2, " Number ");
     mvwprintw(calleridWin, 0, 2, " CallerID ");
     mvwprintw(addressWin, 0, 2, " IP address ");
+
+    showForWins(contextWin, numberWin, calleridWin, addressWin);
     refresh();
 
     int key;
     do {
 	key = getch();
-//	popupKey(key, row, col);
-	if(key == KEY_F(1)) helpMenu(row, col); // Help popup
-	if(key == KEY_F(2)) addMenu(row, col); // Add popup
-	if(key == KEY_F(3)) delPopup(row, col); // Delete popup
-	mvwprintw(stdscr, row - 1, 2, "Selected: %d", key);
+//	popupKey(key, rows, col);
+	if(key == KEY_F(1)) helpMenu(rows, col); // Help popup
+	if(key == KEY_F(2)) addMenu(rows, col); // Add popup
+	if(key == KEY_F(3)) delPopup(rows, col); // Delete popup
+	mvwprintw(stdscr, rows - 1, 2, "Selected: %d", key);
     } while(key != ESCAPE && key != KEY_F(10));
 
     delwin(menubar);
@@ -76,9 +82,9 @@ int wins() {
     return 0;
 }
 
-void helpMenu(int row, int col) {
+void helpMenu(int rows, int col) {
     int helpY = 11, helpX = 65; // Y - rows, X - cols
-    WINDOW *helpPopup = subwin(stdscr, helpY, helpX, (row - 3) / 2, (col - helpX) / 2);
+    WINDOW *helpPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
 //    wbkgd(helpPopup, COLOR_PAIR(3));
     wattron(helpPopup, COLOR_PAIR(3));
     box(helpPopup, 0, 0);
@@ -102,10 +108,10 @@ void helpMenu(int row, int col) {
 //    touchwin(stdscr);
 }
 
-void addMenu(int row, int col) {
+void addMenu(int rows, int col) {
     curs_set(2);
     int helpY = 12, helpX = 65; // Y - rows, X - cols
-    addPopup = subwin(stdscr, helpY, helpX, (row - 3) / 2, (col - helpX) / 2);
+    addPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
     wattron(addPopup, COLOR_PAIR(3));
     box(addPopup, 0, 0);
     mvwprintw(addPopup, 0, (helpX - 5) / 2, " Add ");
@@ -219,7 +225,7 @@ static void driver(int ch) {
 	    form_driver(addForm, REQ_NEXT_FIELD);
 	    form_driver(addForm, REQ_PREV_FIELD);
 	    move(LINES - 2, 2);
-//	    mvwprintw(stdscr, row - 1, 2, "Selected: %d");
+//	    mvwprintw(stdscr, rows - 1, 2, "Selected: %d");
 
 	    for(int i = 0; field[i]; i++) {
 		printw("\"%s", trim_whitespaces(field_buffer(field[i], 0)));
@@ -282,9 +288,9 @@ static void driver(int ch) {
     wrefresh(addPopup);
 }
 
-void delPopup(int row, int col) {
+void delPopup(int rows, int col) {
     int helpY = 7, helpX = 30; // Y - rows, X - cols
-    WINDOW *delPopup = subwin(stdscr, helpY, helpX, (row - 3) / 2, (col - helpX) / 2);
+    WINDOW *delPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
     wattron(delPopup, COLOR_PAIR(3));
     box(delPopup, 0, 0);
     mvwprintw(delPopup, 0, (helpX - 8) / 2, " Delete ");
@@ -313,8 +319,8 @@ void delPopup(int row, int col) {
     touchwin(stdscr);
 }
 
-void popupKey(int key, int row, int col) {
-    WINDOW *popup = subwin(stdscr, 3, 17, (row - 3) / 2, (col - 17) / 2);
+void popupKey(int key, int rows, int col) {
+    WINDOW *popup = subwin(stdscr, 3, 17, (rows - 3) / 2, (col - 17) / 2);
     wattron(popup, COLOR_PAIR(3));
     box(popup, 0, 0);
     if(key == 273) { // F9
@@ -385,4 +391,12 @@ void draw_menubar(WINDOW *menubar) {
     wattron(menubar, COLOR_PAIR(2));
     waddstr(menubar, "Quit");
     wattroff(menubar, COLOR_PAIR(2));
+}
+
+void draw_titlebar(WINDOW *titlebar, int col) {
+    wbkgd(titlebar, COLOR_PAIR(2));
+    wmove(titlebar, 0, col / 2 - 15);
+    wattron(titlebar, COLOR_PAIR(2) | A_BOLD);
+    waddstr(titlebar, " Realtime Users for Asterisk ");
+    wattroff(titlebar, COLOR_PAIR(2) | A_BOLD);
 }
