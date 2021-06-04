@@ -72,6 +72,7 @@ int wins() {
     delwin(addressWin);
     delwin(mainWin);
     endwin();
+    printf("Bye!\n");
     return 0;
 }
 
