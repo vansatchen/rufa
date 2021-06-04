@@ -68,7 +68,7 @@ int wins() {
 	if(key == KEY_F(1)) helpMenu(rows, col); // Help popup
 	if(key == KEY_F(2)) addMenu(rows, col); // Add popup
 	if(key == KEY_F(3)) delPopup(rows, col); // Delete popup
-	mvwprintw(stdscr, rows - 1, 2, "Selected: %d", key);
+	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
     } while(key != ESCAPE && key != KEY_F(10));
 
     delwin(menubar);
