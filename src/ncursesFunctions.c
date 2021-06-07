@@ -58,6 +58,12 @@ int wins() {
     mvwprintw(calleridWin, 0, 2, " CallerID ");
     mvwprintw(addressWin, 0, 2, " IP address ");
 
+    // Fix view lines on only inside boxes
+    contextWin = derwin(contextWin, rows - 3, 0, 0, 0);
+    numberWin = derwin(numberWin, rows - 3, 0, 0, 0);
+    calleridWin = derwin(calleridWin, rows - 3, 0, 0, 0);
+    addressWin = derwin(addressWin, rows - 3, 0, 0, 0);
+
     showForWins(contextWin, numberWin, calleridWin, addressWin);
     refresh();
 
