@@ -297,7 +297,7 @@ static void driver(int ch) {
 
 void delPopup(int rows, int col) {
     int helpY = 7, helpX = 30; // Y - rows, X - cols
-    WINDOW *delPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
+    WINDOW *delPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
     wattron(delPopup, COLOR_PAIR(3));
     box(delPopup, 0, 0);
     mvwprintw(delPopup, 0, (helpX - 8) / 2, " Delete ");
