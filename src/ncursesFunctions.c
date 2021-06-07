@@ -9,7 +9,7 @@
 
 FIELD *field[7], *cfield;
 FORM  *addForm;
-WINDOW *addPopup;
+WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin, *addPopup;
 
 void draw_menubar(WINDOW *menubar);
 void draw_titlebar();
@@ -20,7 +20,7 @@ static void driver();
 void delPopup();
 
 int wins() {
-    WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin;
+//    WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin;
     // Start ncurses finctionality
     initscr();
     start_color();
@@ -34,14 +34,15 @@ int wins() {
     // Screen size & background
     int rows, col;
     getmaxyx(stdscr, rows, col);
-    bkgd(COLOR_PAIR(1));
+//    bkgd(COLOR_PAIR(1));
 //    mvwprintw(stdscr, 0, col - 20, "Rows: %d, Col: %d", rows, col);
     // Panel & main window
     titlebar = subwin(stdscr, 1, col, 0, 0);
-    menubar = subwin(stdscr, 1, col, rows - 1, 0);
-    mainWin = subwin(stdscr, rows - 2, col, 1, 0);
+    menubar = subwin(stdscr, 1, col, rows - 2, 0);
+    mainWin = subwin(stdscr, rows - 3, col, 1, 0);
     draw_menubar(menubar);
     draw_titlebar(titlebar, col);
+    wbkgd(mainWin, COLOR_PAIR(1));
     // Columns and boards
     contextWin = derwin(mainWin, 0, 20, 0, 0);
     numberWin = derwin(mainWin, 0, 12, 0, 19);
@@ -59,10 +60,10 @@ int wins() {
     mvwprintw(addressWin, 0, 2, " IP address ");
 
     // Fix view lines on only inside boxes
-    contextWin = derwin(contextWin, rows - 3, 0, 0, 0);
-    numberWin = derwin(numberWin, rows - 3, 0, 0, 0);
-    calleridWin = derwin(calleridWin, rows - 3, 0, 0, 0);
-    addressWin = derwin(addressWin, rows - 3, 0, 0, 0);
+    contextWin = derwin(contextWin, rows - 4, 0, 0, 0);
+    numberWin = derwin(numberWin, rows - 4, 0, 0, 0);
+    calleridWin = derwin(calleridWin, rows - 4, 0, 0, 0);
+    addressWin = derwin(addressWin, rows - 4, 0, 0, 0);
 
     showForWins(contextWin, numberWin, calleridWin, addressWin);
     refresh();
@@ -117,7 +118,7 @@ void helpMenu(int rows, int col) {
 void addMenu(int rows, int col) {
     curs_set(2);
     int helpY = 12, helpX = 65; // Y - rows, X - cols
-    addPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
+    addPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
     wattron(addPopup, COLOR_PAIR(3));
     box(addPopup, 0, 0);
     mvwprintw(addPopup, 0, (helpX - 5) / 2, " Add ");
