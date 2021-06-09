@@ -1,8 +1,11 @@
-#include <curses.h>
+#define _GNU_SOURCE
+#include <ncursesw/ncurses.h>
+#include <ncursesw/form.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
-#include <form.h>
 #include <ctype.h>
+#include <locale.h>
 #include "functions.h"
 
 #define ESCAPE 27
@@ -66,9 +69,9 @@ int wins() {
     showForWins(contextWin, numberWin, calleridWin, addressWin);
     refresh();
 
-    int key;
+    wchar_t key;
     do {
-	key = getch();
+	get_wch(&key);
 //	popupKey(key, rows, col);
 	if(key == KEY_F(1)) helpMenu(rows, col); // Help popup
 	if(key == KEY_F(2)) addMenu(rows, col); // Add popup
@@ -114,6 +117,7 @@ void helpMenu(int rows, int col) {
 }
 
 void addMenu(int rows, int col) {
+    setlocale(0, "");
     curs_set(2);
     int helpY = 12, helpX = 65; // Y - rows, X - cols
     addPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
@@ -123,7 +127,6 @@ void addMenu(int rows, int col) {
     wrefresh(addPopup);
 
     // context, number, password, callerid
-    int ch;
     field[0] = new_field(1, 20, 1, 10, 0, 0); // context
     field[1] = new_field(1, 20, 3, 10, 0, 0); // number
     field[2] = new_field(1, 20, 5, 10, 0, 0); // password
@@ -134,6 +137,7 @@ void addMenu(int rows, int col) {
 
     set_field_fore(field[0], COLOR_PAIR(2));
     set_field_back(field[0], COLOR_PAIR(2));
+//    set_field_type(field[0], TYPE_ALNUM, 40);
     set_field_fore(field[1], COLOR_PAIR(2));
     set_field_back(field[1], COLOR_PAIR(2));
     set_field_type(field[1], TYPE_NUMERIC, 0, 4, 4); // TYPE_INTEGER, TYPE_NUMERIC, TYPE_REGEXP       TYPE_IPV4
@@ -147,6 +151,7 @@ void addMenu(int rows, int col) {
     set_max_field(field[3], 80);
     set_field_fore(field[4], COLOR_PAIR(2));
     set_field_back(field[4], COLOR_PAIR(2));
+//    field_opts_off(field[4], O_EDIT);
     set_field_opts(field[4], O_VISIBLE);
     set_field_fore(field[5], COLOR_PAIR(2));
     set_field_back(field[5], COLOR_PAIR(2));
@@ -158,7 +163,7 @@ void addMenu(int rows, int col) {
     post_form(addForm);
 
     set_current_field(addForm, field[0]);
-    mvwprintw(addPopup, 1, 1, " \t\t\t\t\t\t\t\t");
+/*    mvwprintw(addPopup, 1, 1, " \t\t\t\t\t\t\t\t");
     mvwprintw(addPopup, 2, 1, "  Context:");
     mvwprintw(addPopup, 2, 31, " \t\t\t\t");
     mvwprintw(addPopup, 3, 1, " \t\t\t\t\t\t\t\t");
@@ -173,19 +178,22 @@ void addMenu(int rows, int col) {
     mvwprintw(addPopup, 9, 1, " \t\t\t\t\t\t\t\t");
     mvwprintw(addPopup, 10, 1, " \t\t\t\t\t\t");
     mvwprintw(addPopup, 10, 39, "[F10]Cancel \t");
-    mvwprintw(addPopup, 10, 54, "[ Apply ] ");
+    mvwprintw(addPopup, 10, 54, "[ Apply ] ");*/
 
     wrefresh(addPopup);
-    while((ch = getch()) != KEY_F(10)) {
-	driver(ch);
-	if(ch == '\n') {
-	    cfield = current_field(addForm);
-	    if(cfield == field[5]) {
-	    driver(KEY_F(11));
-		break;
-	    }
-	}
-    }
+    int ch;
+    do {
+	get_wch(&ch);
+	if(ch == KEY_F(10)) break;
+        driver(ch);
+        if(ch == '\n') {
+            cfield = current_field(addForm);
+            if(cfield == field[5]) {
+                driver(KEY_F(11));
+                break;
+            }
+        }
+    } while(1);
 
     unpost_form(addForm);
     free_form(addForm);
@@ -273,13 +281,11 @@ static void driver(int ch) {
 		if(cfield == field[5]) form_driver(addForm, REQ_END_LINE);
 	    }
 	    break;
-	// Delete the char before cursor
-	case KEY_BACKSPACE:
+	case KEY_BACKSPACE: // Delete the char before cursor
 	case 127:
 	    form_driver(addForm, REQ_DEL_PREV);
 	    break;
-	// Delete the char under the cursor
-	case KEY_DC:
+	case KEY_DC: // Delete the char under the cursor
 	    form_driver(addForm, REQ_DEL_CHAR);
 	    break;
 	default:
