@@ -97,19 +97,26 @@ void helpMenu(int rows, int col) {
     wattron(helpPopup, COLOR_PAIR(3));
     box(helpPopup, 0, 0);
     // Help menu content
-    mvwprintw(helpPopup, 0, (helpX - 6) / 2, " Help ");
-    mvwprintw(helpPopup, 1, 1, " Realtime users for asterisk\t\t\t\t\t");
-    mvwprintw(helpPopup, 2, 1, " Usage: rufa [OPTION]\t\t\t\t\t\t");
-    mvwprintw(helpPopup, 3, 1, " Options:\t\t\t\t\t\t\t");
-    mvwprintw(helpPopup, 4, 1, "\t--help          display this help and exit\t\t");
-    mvwprintw(helpPopup, 5, 1, "\t--createdb      Create database and exit\t\t");
-    mvwprintw(helpPopup, 6, 1, "\t--truncatedb    Truncate database and exit\t\t");
-    mvwprintw(helpPopup, 7, 1, "\t--version       Show version and exit\t\t\t");
-    mvwprintw(helpPopup, 8, 1, "\t\t\t\t\t\t\t\t");
-    mvwprintw(helpPopup, 9, 1, "\tsomecontext     Use 'somecontext' as default context\t");
+    mvwaddwstr(helpPopup, 0, (helpX - 6) / 2, L" Help ");
+    mvwaddwstr(helpPopup, 1, 1, L" Realtime users for asterisk\t\t\t\t\t");
+    mvwaddwstr(helpPopup, 2, 1, L" Usage: rufa [OPTION]\t\t\t\t\t\t");
+    mvwaddwstr(helpPopup, 3, 1, L" Options:\t\t\t\t\t\t\t");
+    mvwaddwstr(helpPopup, 4, 1, L"\t--help          display this help and exit\t\t");
+    mvwaddwstr(helpPopup, 5, 1, L"\t--createdb      Create database and exit\t\t");
+    mvwaddwstr(helpPopup, 6, 1, L"\t--truncatedb    Truncate database and exit\t\t");
+    mvwaddwstr(helpPopup, 7, 1, L"\t--version       Show version and exit\t\t\t");
+    mvwaddwstr(helpPopup, 8, 1, L"\t\t\t\t\t\t\t\t");
+    mvwaddwstr(helpPopup, 9, 1, L"\tsomecontext     Use 'somecontext' as default context\t");
+    mvwaddwstr(helpPopup, 10, 1, L"\t\t\t\t\t\t\t\t");
+    mvwaddwstr(helpPopup, 11, 1, L"\t\t\t\t\t\t    [F10]Close  ");
 
     wrefresh(helpPopup);
-    getch();
+//    getch();
+        int closeHelpWin;
+    do {
+        get_wch(&closeHelpWin);
+        if(closeHelpWin == KEY_F(10)) break;
+    } while(1);
     wattroff(helpPopup, COLOR_PAIR(3));
     werase(helpPopup);
     delwin(helpPopup);
