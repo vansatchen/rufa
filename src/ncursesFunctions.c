@@ -163,22 +163,22 @@ void addMenu(int rows, int col) {
     post_form(addForm);
 
     set_current_field(addForm, field[0]);
-/*    mvwprintw(addPopup, 1, 1, " \t\t\t\t\t\t\t\t");
-    mvwprintw(addPopup, 2, 1, "  Context:");
-    mvwprintw(addPopup, 2, 31, " \t\t\t\t");
-    mvwprintw(addPopup, 3, 1, " \t\t\t\t\t\t\t\t");
-    mvwprintw(addPopup, 4, 1, "   Number:");
-    mvwprintw(addPopup, 4, 31, " \t\t\t\t");
-    mvwprintw(addPopup, 5, 1, " \t\t\t\t\t\t\t\t");
-    mvwprintw(addPopup, 6, 1, " Password:");
-    mvwprintw(addPopup, 6, 31, " \t\t\t\t");
-    mvwprintw(addPopup, 7, 1, " \t\t\t\t\t\t\t\t");
-    mvwprintw(addPopup, 8, 1, " CallerID:");
-    mvwprintw(addPopup, 8, 51, " \t\t");
-    mvwprintw(addPopup, 9, 1, " \t\t\t\t\t\t\t\t");
-    mvwprintw(addPopup, 10, 1, " \t\t\t\t\t\t");
-    mvwprintw(addPopup, 10, 39, "[F10]Cancel \t");
-    mvwprintw(addPopup, 10, 54, "[ Apply ] ");*/
+    mvwaddwstr(addPopup, 1, 1, L" \t\t\t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 2, 1, L"  Context:");
+    mvwaddwstr(addPopup, 2, 31, L" \t\t\t\t");
+    mvwaddwstr(addPopup, 3, 1, L" \t\t\t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 4, 1, L"   Number:");
+    mvwaddwstr(addPopup, 4, 31, L" \t\t\t\t");
+    mvwaddwstr(addPopup, 5, 1, L" \t\t\t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 6, 1, L" Password:");
+    mvwaddwstr(addPopup, 6, 31, L" \t\t\t\t");
+    mvwaddwstr(addPopup, 7, 1, L" \t\t\t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 8, 1, L" CallerID:");
+    mvwaddwstr(addPopup, 8, 51, L" \t\t");
+    mvwaddwstr(addPopup, 9, 1, L" \t\t\t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 10, 1, L" \t\t\t\t\t\t");
+    mvwaddwstr(addPopup, 10, 39, L"[F10]Cancel \t");
+    mvwaddwstr(addPopup, 10, 54, L"[ Apply ] ");
 
     wrefresh(addPopup);
     int ch;
