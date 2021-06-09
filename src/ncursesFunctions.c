@@ -20,7 +20,6 @@ static void driver();
 void delPopup();
 
 int wins() {
-//    WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin;
     // Start ncurses finctionality
     initscr();
     start_color();
@@ -34,7 +33,6 @@ int wins() {
     // Screen size & background
     int rows, col;
     getmaxyx(stdscr, rows, col);
-//    bkgd(COLOR_PAIR(1));
 //    mvwprintw(stdscr, 0, col - 20, "Rows: %d, Col: %d", rows, col);
     // Panel & main window
     titlebar = subwin(stdscr, 1, col, 0, 0);
@@ -126,7 +124,6 @@ void addMenu(int rows, int col) {
 
     // context, number, password, callerid
     int ch;
-
     field[0] = new_field(1, 20, 1, 10, 0, 0); // context
     field[1] = new_field(1, 20, 3, 10, 0, 0); // number
     field[2] = new_field(1, 20, 5, 10, 0, 0); // password
@@ -137,7 +134,6 @@ void addMenu(int rows, int col) {
 
     set_field_fore(field[0], COLOR_PAIR(2));
     set_field_back(field[0], COLOR_PAIR(2));
-//    set_field_type(field[0], TYPE_ALNUM, 40);
     set_field_fore(field[1], COLOR_PAIR(2));
     set_field_back(field[1], COLOR_PAIR(2));
     set_field_type(field[1], TYPE_NUMERIC, 0, 4, 4); // TYPE_INTEGER, TYPE_NUMERIC, TYPE_REGEXP       TYPE_IPV4
@@ -151,7 +147,6 @@ void addMenu(int rows, int col) {
     set_max_field(field[3], 80);
     set_field_fore(field[4], COLOR_PAIR(2));
     set_field_back(field[4], COLOR_PAIR(2));
-//    field_opts_off(field[4], O_EDIT);
     set_field_opts(field[4], O_VISIBLE);
     set_field_fore(field[5], COLOR_PAIR(2));
     set_field_back(field[5], COLOR_PAIR(2));
@@ -191,7 +186,6 @@ void addMenu(int rows, int col) {
 	    }
 	}
     }
-//    wattroff(addPopup, COLOR_PAIR(3));
 
     unpost_form(addForm);
     free_form(addForm);
