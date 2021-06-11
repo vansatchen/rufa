@@ -108,9 +108,8 @@ void helpMenu(int rows, int col) {
     mvwaddwstr(helpPopup, 9, 1, L"\tsomecontext     Use 'somecontext' as default context\t");
     mvwaddwstr(helpPopup, 10, 1, L"\t\t\t\t\t\t\t\t");
     mvwaddwstr(helpPopup, 11, 1, L"\t\t\t\t\t\t    [F10]Close  ");
-
     wrefresh(helpPopup);
-//    getch();
+
     int closeHelpWin;
     do {
         get_wch(&closeHelpWin);
@@ -217,6 +216,36 @@ void addMenu(int rows, int col) {
     touchwin(stdscr);
 }
 
+void delPopup(int rows, int col) {
+    int helpY = 7, helpX = 30; // Y - rows, X - cols
+    WINDOW *delPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
+    wattron(delPopup, COLOR_PAIR(3));
+    box(delPopup, 0, 0);
+    wrefresh(delPopup);
+
+    int ch;
+    mvwaddwstr(delPopup, 0, (helpX - 8) / 2, L" Delete ");
+    mvwaddwstr(delPopup, 1, 1, L" \t\t\t     ");
+    mvwaddwstr(delPopup, 2, 1, L" \tAre you shure?\t     ");
+    mvwaddwstr(delPopup, 3, 1, L" \t\t\t     ");
+    mvwaddwstr(delPopup, 4, 1, L" [F10]Cancel\t");
+    mvwaddwstr(delPopup, 4, 16, L"[Enter]Apply ");
+    mvwaddwstr(delPopup, 5, 1, L" \t\t\t     ");
+
+    wrefresh(delPopup);
+    while((ch = getch()) != KEY_F(10)) {
+        if(ch == '\n') {
+            driver(KEY_F(11));
+            break;
+        }
+    }
+
+    wattroff(delPopup, COLOR_PAIR(3));
+    werase(delPopup);
+    delwin(delPopup);
+    touchwin(stdscr);
+}
+
 // This is useful because ncurses fill fields blanks with spaces.
 static char* trim_whitespaces(char *str) {
     // trim leading space
@@ -299,37 +328,6 @@ static void driver(int ch) {
 	    break;
     }
     wrefresh(addPopup);
-}
-
-void delPopup(int rows, int col) {
-    int helpY = 7, helpX = 30; // Y - rows, X - cols
-    WINDOW *delPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
-    wattron(delPopup, COLOR_PAIR(3));
-    box(delPopup, 0, 0);
-    mvwprintw(delPopup, 0, (helpX - 8) / 2, " Delete ");
-    wrefresh(delPopup);
-
-    int ch;
-
-    mvwprintw(delPopup, 1, 1, " \t\t\t     ");
-    mvwprintw(delPopup, 2, 1, " \tAre you shure?\t     ");
-    mvwprintw(delPopup, 3, 1, " \t\t\t     ");
-    mvwprintw(delPopup, 4, 1, " [F10]Cancel\t");
-    mvwprintw(delPopup, 4, 16, "[Enter]Apply ");
-    mvwprintw(delPopup, 5, 1, " \t\t\t     ");
-
-    wrefresh(delPopup);
-    while((ch = getch()) != KEY_F(10)) {
-	if(ch == '\n') {
-	    driver(KEY_F(11));
-	    break;
-	}
-    }
-
-    wattroff(delPopup, COLOR_PAIR(3));
-    werase(delPopup);
-    delwin(delPopup);
-    touchwin(stdscr);
 }
 
 void popupKey(int key, int rows, int col) {
