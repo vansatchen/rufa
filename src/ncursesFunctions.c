@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <locale.h>
 #include "functions.h"
 
 #define ESCAPE 27
@@ -91,8 +90,8 @@ int wins() {
 }
 
 void helpMenu(int rows, int col) {
-    int helpY = 11, helpX = 65; // Y - rows, X - cols
-    WINDOW *helpPopup = subwin(stdscr, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
+    int helpY = 13, helpX = 65; // Y - rows, X - cols
+    WINDOW *helpPopup = subwin(mainWin, helpY, helpX, (rows - 3) / 2, (col - helpX) / 2);
 //    wbkgd(helpPopup, COLOR_PAIR(3));
     wattron(helpPopup, COLOR_PAIR(3));
     box(helpPopup, 0, 0);
@@ -112,7 +111,7 @@ void helpMenu(int rows, int col) {
 
     wrefresh(helpPopup);
 //    getch();
-        int closeHelpWin;
+    int closeHelpWin;
     do {
         get_wch(&closeHelpWin);
         if(closeHelpWin == KEY_F(10)) break;
@@ -120,7 +119,7 @@ void helpMenu(int rows, int col) {
     wattroff(helpPopup, COLOR_PAIR(3));
     werase(helpPopup);
     delwin(helpPopup);
-//    touchwin(stdscr);
+    touchwin(stdscr);
 }
 
 void addMenu(int rows, int col) {
