@@ -252,7 +252,7 @@ void additionalEdit() {
     pjCodecs[strcspn(pjCodecs, "\n")] = 0;
     if(strlen(pjCodecs) == 0) strcpy(pjCodecs, currentCodecs); // If pjCodecs empty, set to currentCodecs
 
-    updateBaseToMysql(pjMaxContacts, pjTransport, pjMediaEncryption, pjCodecs);
+    updateAdditionalToMysql(pjsipName, pjMaxContacts, pjTransport, pjMediaEncryption, pjCodecs);
 
     free(pjsipName);
     free(pjMaxContacts);

@@ -17,6 +17,7 @@ void delFromMysql();
 int checkNumberExist();
 char *getCurrentOption();
 void updateBaseToMysql();
+void updateAdditionalToMysql();
 void createdb();
 void truncatedb();
 void truncateAnswer();

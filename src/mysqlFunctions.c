@@ -167,6 +167,24 @@ void updateBaseToMysql(char *pjContext, char *pjsipName, char *pjNewName, char *
     mysql_close(con);
 }
 
+void updateAdditionalToMysql(char *pjsipName, char *pjMaxContacts, char *pjTransport, char *pjMediaEncryption, char *pjCodecs) {
+    MYSQL *con = mysql_init(NULL);
+    if(con == NULL) {
+        fprintf(stderr, "mysql_init() failed\n");
+        exit(1);
+    }
+    if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
+    mysql_set_character_set(con, "utf8");
+    char queryAors[1024];
+    sprintf(queryAors, "UPDATE %s SET max_contacts = '%s' WHERE id = '%s'", DB_TABLE_AORS, pjMaxContacts, pjsipName);
+    if(mysql_query(con, queryAors)) finish_with_error(con);
+    char queryEndpoints[1024];
+    sprintf(queryEndpoints, "UPDATE %s SET transport = '%s',media_encryption = '%s',allow = '%s' \
+                             WHERE id = '%s'", DB_TABLE_ENDPOINTS, pjTransport, pjMediaEncryption, pjCodecs, pjsipName);
+    if(mysql_query(con, queryEndpoints)) finish_with_error(con);
+    mysql_close(con);
+}
+
 const char *truncate_query = QUOTE(
     TRUNCATE TABLE `cdr`;
     TRUNCATE TABLE `ps_aors`;
