@@ -384,7 +384,7 @@ void rebootRemotePhone(){
 	char *curlAnswer = curlFunc(ipAddress, checkAdminPass);
 	char symbol = curlAnswer[0];
 	if(symbol != '{') { // Check that first symbol is '{'
-	    printf("Unknown request\n");
+	    printf("\033[0;31mUnknown respons\033[0;33m %s\033[0m\n", curlAnswer);
 	    break;
 	}
 	splitAnswer = strtok(curlAnswer, ",");
