@@ -19,8 +19,6 @@ extern char *phoneUserPass;
 extern char checkPath[100];
 extern char *checkAdminPass;
 extern int useSimplePass;
-//int curlFound = 0;
-extern char *curlPath;
 
 void printDone() {
     printf("----------------\n");
@@ -377,39 +375,41 @@ void rebootRemotePhone(){
     printf("Enter ip-address: ");
     getline(&ipAddress, &n0, stdin);
     ipAddress[strcspn(ipAddress, "\n")] = 0;
-    if(strlen(ipAddress) == 0) {
+    if(!strlen(ipAddress)) {
 	printf("No credentials? Abort.\n\n");
-    } else {
-	char queryReboot[1024];
-
-	char *splitAnswer;
-	do {
-	    char *curlAnswer = curlFunc(ipAddress, checkAdminPass);
-
-	    splitAnswer = strtok(curlAnswer, ",");
-	    splitAnswer = strtok(splitAnswer, ":");
-	    splitAnswer = strtok (NULL, ":");
-
-            int f = 0, i = 0;
-            while(splitAnswer[f]) {
-		if(splitAnswer[f] != '\"') splitAnswer[i++] = splitAnswer[f]; // Delete all "
-		++f;
-	    }
-	    splitAnswer[i] = '\0';
-	    printf("Result: \033[0;33m%s\033[0m\n", splitAnswer);
-	    if(strcmp(splitAnswer, "error") == 0) {
-		printf("\033[0;31mPassword \033[0;33m%s\033[0;31m is wrong. Please enter another password:\033[0m ", checkAdminPass);
-		getline(&checkAdminPass, &n1, stdin);
-		checkAdminPass[strcspn(checkAdminPass, "\n")] = 0;
-		if(strlen(checkAdminPass) == 0) {
-		    printf("No credentials? Abort.\n\n");
-		    break;
-		}
-	    }
-
-	    free(curlAnswer);
-	} while(strcmp(splitAnswer, "error") == 0);
+	return;
     }
+    char *splitAnswer;
+    do {
+	char *curlAnswer = curlFunc(ipAddress, checkAdminPass);
+	char symbol = curlAnswer[0];
+	if(symbol != '{') { // Check that first symbol is '{'
+	    printf("Unknown request\n");
+	    break;
+	}
+	splitAnswer = strtok(curlAnswer, ",");
+	splitAnswer = strtok(splitAnswer, ":");
+	splitAnswer = strtok (NULL, ":");
+
+        int f = 0, i = 0;
+        while(splitAnswer[f]) {
+	    if(splitAnswer[f] != '\"') splitAnswer[i++] = splitAnswer[f]; // Delete all "
+	    ++f;
+	}
+	splitAnswer[i] = '\0';
+	printf("Result: \033[0;33m%s\033[0m\n", splitAnswer);
+	if(strcmp(splitAnswer, "error") == 0) {
+	    printf("\033[0;31mPassword \033[0;33m%s\033[0;31m is wrong. Please enter another password:\033[0m ", checkAdminPass);
+	    getline(&checkAdminPass, &n1, stdin);
+	    checkAdminPass[strcspn(checkAdminPass, "\n")] = 0;
+	    if(strlen(checkAdminPass) == 0) {
+		printf("No credentials? Abort.\n\n");
+		break;
+	    }
+	}
+
+	free(curlAnswer);
+    } while(strcmp(splitAnswer, "error") == 0);
 }
 
 void truncateAnswer() {

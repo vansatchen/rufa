@@ -1,5 +1,6 @@
 // ToDo:
 // ^Configure
+// ^Work with html respons by curl
 
 #include <stdio.h>
 #include "functions.h"
