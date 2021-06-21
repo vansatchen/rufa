@@ -55,10 +55,10 @@ char *handle_url(char* url) {
     return data.data;
 }
 
-char *curlFunc(char *curlAnswer, char *checkAdminPass) {
+char *curlFunc(char *ipAddress, char *checkAdminPass) {
     char queryCurl[1024];
-    sprintf(queryCurl, "%s/cgi-bin/api-sys_operation?passcode=%s&request=REBOOT", curlAnswer, checkAdminPass);
-    curlAnswer = handle_url(queryCurl);
+    sprintf(queryCurl, "%s/cgi-bin/api-sys_operation?passcode=%s&request=REBOOT", ipAddress, checkAdminPass);
+    char *curlAnswer = handle_url(queryCurl);
 
     return curlAnswer;
 }
