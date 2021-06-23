@@ -383,20 +383,27 @@ void rebootRemotePhone(){
     do {
 	char *curlAnswer = curlFunc(ipAddress, checkAdminPass);
 	char symbol = curlAnswer[0];
-	if(symbol != '{') { // Check that first symbol is '{'
+        if(symbol == '<') { // Check that first symbol is '<'
+            splitAnswer = strstr(curlAnswer, "Unauthorized");
+            if(splitAnswer) {
+                splitAnswer = "error";
+            }
+        } else {
 	    printf("\033[0;31mUnknown respons\033[0;33m %s\033[0m\n", curlAnswer);
 	    break;
 	}
-	splitAnswer = strtok(curlAnswer, ",");
-	splitAnswer = strtok(splitAnswer, ":");
-	splitAnswer = strtok (NULL, ":");
+        if(symbol == '{') { // Check that first symbol is '{'
+            splitAnswer = strtok(curlAnswer, ",");
+            splitAnswer = strtok(splitAnswer, ":");
+            splitAnswer = strtok (NULL, ":");
 
-        int f = 0, i = 0;
-        while(splitAnswer[f]) {
-	    if(splitAnswer[f] != '\"') splitAnswer[i++] = splitAnswer[f]; // Delete all "
-	    ++f;
-	}
-	splitAnswer[i] = '\0';
+            int f = 0, i = 0;
+            while(splitAnswer[f]) {
+                if(splitAnswer[f] != '\"') splitAnswer[i++] = splitAnswer[f]; // Delete all "
+                ++f;
+            }
+            splitAnswer[i] = '\0';
+        }
 	printf("Result: \033[0;33m%s\033[0m\n", splitAnswer);
 	if(strcmp(splitAnswer, "error") == 0) {
 	    printf("\033[0;31mPassword \033[0;33m%s\033[0;31m is wrong. Please enter another password:\033[0m ", checkAdminPass);
