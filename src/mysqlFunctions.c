@@ -18,6 +18,7 @@ extern char *DB_TABLE_AORS;
 extern char *DB_TABLE_AUTHS;
 extern char *DB_TABLE_CONTACTS;
 extern char *defaultContext;
+MYSQL_RES *result;
 
 void finish_with_error(MYSQL *con) {
     fprintf(stderr, "%s\n", mysql_error(con));
@@ -311,7 +312,8 @@ char *getAvailContexts() {
     return availContexts;
 }
 
-void showForWins(WINDOW *contextWin, WINDOW *numberWin, WINDOW *calleridWin, WINDOW *addressWin) {
+//void showForWins(WINDOW *contextWin, WINDOW *numberWin, WINDOW *calleridWin, WINDOW *addressWin) {
+void get4wins() {
     MYSQL *con = mysql_init(NULL);
     if(con == NULL) fprintf(stderr, "mysql_init() failed\n");
     if(mysql_real_connect(con, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) finish_with_error(con);
@@ -323,33 +325,9 @@ void showForWins(WINDOW *contextWin, WINDOW *numberWin, WINDOW *calleridWin, WIN
                         DB_TABLE_CONTACTS, DB_TABLE_AUTHS, DB_TABLE_ENDPOINTS, DB_TABLE_CONTACTS, DB_TABLE_AUTHS, DB_TABLE_CONTACTS, "username");
     if(mysql_query(con, queryShow)) finish_with_error(con);
 
-    MYSQL_RES *result = mysql_store_result(con);
+    result = mysql_store_result(con);
     if(result == NULL) finish_with_error(con);
 
-    MYSQL_ROW row;
-    int countRow = 0;
-    setlocale(0, "");
-    wchar_t* temp = calloc(sizeof(wchar_t), 1000);
-    wattron(contextWin, A_BOLD);
-    wattron(numberWin, A_BOLD);
-    wattron(calleridWin, A_BOLD);
-    wattron(addressWin, A_BOLD);
-    while((row = mysql_fetch_row(result))) {
-        for(int i = 0; i < 4; i++) {
-            swprintf(temp, 100, L"%s", row[i]);
-            if(i == 0) mvwaddwstr(contextWin, countRow + 1, 2, temp);
-            if(i == 1) mvwaddwstr(numberWin, countRow + 1, 2, temp);
-            if(i == 2) mvwaddwstr(calleridWin, countRow + 1, 2, temp);
-            if(i == 3) mvwaddwstr(addressWin, countRow + 1, 2, temp);
-        }
-        countRow++;
-    }
-    wattroff(contextWin, A_BOLD);
-    wattroff(numberWin, A_BOLD);
-    wattroff(calleridWin, A_BOLD);
-    wattroff(addressWin, A_BOLD);
-
-    free(temp);
     mysql_free_result(result);
     mysql_close(con);
 }

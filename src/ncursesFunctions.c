@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <mysql.h>
 #include "functions.h"
 
-#define ESCAPE 27
+extern MYSQL_RES *result;
+int rows, col;
 
 FIELD *field[7], *cfield;
 FORM  *addForm;
@@ -20,6 +22,7 @@ void helpMenu();
 void addMenu();
 static void driver();
 void delPopup();
+void show4wins();
 
 int wins() {
     // Start ncurses finctionality
@@ -33,7 +36,6 @@ int wins() {
     noecho();
     keypad(stdscr, TRUE);
     // Screen size & background
-    int rows, col;
     getmaxyx(stdscr, rows, col);
 //    mvwprintw(stdscr, 0, col - 20, "Rows: %d, Col: %d", rows, col);
     // Panel & main window
@@ -65,8 +67,8 @@ int wins() {
     calleridWin = derwin(calleridWin, rows - 4, 0, 0, 0);
     addressWin = derwin(addressWin, rows - 4, 0, 0, 0);
 
-    showForWins(contextWin, numberWin, calleridWin, addressWin);
-    refresh();
+    show4wins(rows);
+//    refresh();
 
     wchar_t key;
     do {
@@ -76,7 +78,7 @@ int wins() {
 	if(key == KEY_F(2)) addMenu(rows, col); // Add popup
 	if(key == KEY_F(3)) delPopup(rows, col); // Delete popup
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
-    } while(key != ESCAPE && key != KEY_F(10));
+    } while(key != KEY_F(10));
 
     delwin(menubar);
     delwin(contextWin);
@@ -87,6 +89,47 @@ int wins() {
     endwin();
     printf("Bye!\n");
     return 0;
+}
+
+void show4wins(int rows) {
+    get4wins();
+    MYSQL_ROW row;
+    int countRow = 0;
+    setlocale(0, "");
+    wchar_t* temp = calloc(sizeof(wchar_t), 1000);
+    wattron(contextWin, A_BOLD);
+    wattron(numberWin, A_BOLD);
+    wattron(calleridWin, A_BOLD);
+    wattron(addressWin, A_BOLD);
+    int num_rows = mysql_num_rows(result);
+    char *numberVar[num_rows];
+    while((row = mysql_fetch_row(result))) {
+        for(int i = 0; i < 4; i++) {
+            swprintf(temp, 100, L"%s", row[i]);
+            if(i == 0) {
+                mvwaddwstr(contextWin, countRow + 1, 2, temp);
+            }
+            if(i == 1) {
+                mvwaddwstr(numberWin, countRow + 1, 2, temp);
+                numberVar[countRow] = row[1];
+            }
+            if(i == 2) {
+                mvwaddwstr(calleridWin, countRow + 1, 2, temp);
+            }
+            if(i == 3) {
+                mvwaddwstr(addressWin, countRow + 1, 2, temp);
+            }
+        }
+        countRow++;
+    }
+    wattroff(contextWin, A_BOLD);
+    wattroff(numberWin, A_BOLD);
+    wattroff(calleridWin, A_BOLD);
+    wattroff(addressWin, A_BOLD);
+    mvwprintw(stdscr, rows - 1, 1, "Accounts: %d\tNumber5: %s", num_rows, numberVar[5 - 1]);
+
+    free(temp);
+    refresh();
 }
 
 void helpMenu(int rows, int col) {

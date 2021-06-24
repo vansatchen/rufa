@@ -33,4 +33,4 @@ void showByContextMysql();
 char *getAvailContexts();
 void menuDriver();
 int wins();
-void showForWins();
+void get4wins();
