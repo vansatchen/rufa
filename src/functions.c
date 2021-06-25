@@ -19,6 +19,14 @@ extern char *phoneUserPass;
 extern char checkPath[100];
 extern char *checkAdminPass;
 extern int useSimplePass;
+extern int dateFormat;
+extern int timeFormat;
+extern int enableLLDP;
+extern int phoneBook;
+extern char *phoneBookServer;
+extern int phoneBookInterval;
+extern int removeManuallyEntries;
+extern int phoneBookSort;
 
 void printDone() {
     printf("----------------\n");
@@ -329,9 +337,22 @@ void makeConfig() {
 			"    <P196>%s</P196>\n\n"\
 			"<!--# Disable SIP NOTIFY Authentication -->\n"\
 			"    <P4428>1</P4428>\n"\
+			"<!-- Time dd-mm-yyyy  -->\n"\
+			"    <P102>%d</P102>\n\n"\
+			"<!-- Time Format -->\n"\
+			"    <P122>%d</P122>\n\n"\
+			"<!-- LLDP -->\n"\
+			"    <P1684>%d</P1684>\n\n"\
+			"<!-- Phonebook -->\n"\
+			"    <P330>%d</P330>\n"\
+			"    <P331>%s</P331>\n"\
+			"    <P332>%d</P332>\n"\
+			"    <P333>%d</P333>\n"\
+			"    <P2914>%d</P2914>\n"\
 			"  </config>\n"\
 			"</gs_provision>\n\n", pjMacAddress, pjsipName, pbxHost, pjsipName, pjsipName, currentPassword, pjsipName, \
-			phoneAdminPass, enableVlan, vlan, dispLang, timeZone, ntpServer, phoneUserPass);
+			phoneAdminPass, enableVlan, vlan, dispLang, timeZone, ntpServer, phoneUserPass, dateFormat, timeFormat, \
+			enableLLDP, phoneBook, phoneBookServer, phoneBookInterval, removeManuallyEntries, phoneBookSort);
 
     char configNameStart[4] = "cfg", configNameEnd[5] = ".xml", configName[20] = "";
     strcat(configName, configNameStart);

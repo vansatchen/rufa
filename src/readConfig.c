@@ -25,15 +25,23 @@ int useSimplePass = 0; // Flag of using simple pass
 char defaultPass[10] = "pass"; // Get password from pjsipName + defaultPass
 int numberLen = 4; // Length of number
 // Defaults for phone configs
-char *pbxHost = "pbx.example.com"; // PBX-server for config
-char *phoneAdminPass = "admin"; // Admin password for WUI phone for config
-char *enableVlan = "0"; // Enable vlan for config
-char *vlan = "0"; // Vlan for config
-char *dispLang = "ru"; // Display language for config
-char *timeZone = "MTZ-5MDT-5,M4.1.0,M11.1.0"; // Time zone for config
-char *ntpServer = "pool.ntp.org"; // NTP server for config
-char *phoneUserPass = "user123"; // User password for WUI phone for config
+char *pbxHost = "pbx.example.com"; // PBX-server for config(p47)
+char *phoneAdminPass = "admin"; // Admin password for WUI phone for config(p2)
+char *enableVlan = "0"; // Enable vlan for config(p22174)
+char *vlan = "0"; // Vlan for config(p51)
+char *dispLang = "ru"; // Display language for config(p1362)
+char *timeZone = "MTZ-5MDT-5,M4.1.0,M11.1.0"; // Time zone for config(p246)
+char *ntpServer = "pool.ntp.org"; // NTP server for config(p30)
+char *phoneUserPass = "user123"; // User password for WUI phone for config(p196)
 char checkPath[100] = "/configs/"; // Path to check exists configs
+int dateFormat = 2; // Date display format(p102)
+int timeFormat = 1; // Time display format(p122)
+int enableLLDP = 0; // Enable LLDP(p1684)
+int phoneBook = 1; // Enable download phonebook(p330)
+char *phoneBookServer = "pbx.example.com"; // Phonebook download server(p331)
+int phoneBookInterval = 720; // Phonebook download interval(p332)
+int removeManuallyEntries = 0; // Remove Manually-edited entries(p333)
+int phoneBookSort = 0; // Sort Phonebook by last name or first name(p2914)
 // Other defaults
 char *checkAdminPass = "admin1"; // Check current admin pass
 int pseudoGui = 0; // Run with ncurses GUI
@@ -93,6 +101,14 @@ int read_params(FILE *in, struct param *p, int max_params) {
 	if(strcmp(p->name, "phonecheckpath") == 0) strcpy(checkPath, p->value);
 	if(strcmp(p->name, "phonecheckadminpass") == 0) checkAdminPass = p->value;
 
+	if(strcmp(p->name, "dateformat") == 0) dateFormat = p->value;
+	if(strcmp(p->name, "timeformat") == 0) timeFormat = p->value;
+	if(strcmp(p->name, "enableLLDP") == 0) enableLLDP = p->value;
+	if(strcmp(p->name, "phonebook") == 0) phoneBook = p->value;
+	if(strcmp(p->name, "phonebookserver") == 0) phoneBookServer = p->value;
+	if(strcmp(p->name, "phonebookinterval") == 0) phoneBookInterval = p->value;
+	if(strcmp(p->name, "removemanuallyentries") == 0) removeManuallyEntries = p->value;
+	if(strcmp(p->name, "phonebooksort") == 0) phoneBookSort = p->value;
 	p++, max_params--, n++;
     }
 
