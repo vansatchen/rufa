@@ -100,15 +100,15 @@ int read_params(FILE *in, struct param *p, int max_params) {
 	if(strcmp(p->name, "phoneuserpass") == 0) phoneUserPass = p->value;
 	if(strcmp(p->name, "phonecheckpath") == 0) strcpy(checkPath, p->value);
 	if(strcmp(p->name, "phonecheckadminpass") == 0) checkAdminPass = p->value;
-
-	if(strcmp(p->name, "dateformat") == 0) dateFormat = p->value;
-	if(strcmp(p->name, "timeformat") == 0) timeFormat = p->value;
-	if(strcmp(p->name, "enableLLDP") == 0) enableLLDP = p->value;
-	if(strcmp(p->name, "phonebook") == 0) phoneBook = p->value;
+	if(strcmp(p->name, "dateformat") == 0) sprintf(p->value, "%d", dateFormat);
+	if(strcmp(p->name, "timeformat") == 0) sprintf(p->value, "%d", timeFormat);
+	if(strcmp(p->name, "enableLLDP") == 0) sprintf(p->value, "%d", enableLLDP);
+	if(strcmp(p->name, "phonebook") == 0) sprintf(p->value, "%d", phoneBook);
 	if(strcmp(p->name, "phonebookserver") == 0) phoneBookServer = p->value;
-	if(strcmp(p->name, "phonebookinterval") == 0) phoneBookInterval = p->value;
-	if(strcmp(p->name, "removemanuallyentries") == 0) removeManuallyEntries = p->value;
-	if(strcmp(p->name, "phonebooksort") == 0) phoneBookSort = p->value;
+	if(strcmp(p->name, "phonebookinterval") == 0) sprintf(p->value, "%d", phoneBookInterval);
+	if(strcmp(p->name, "removemanuallyentries") == 0) sprintf(p->value, "%d", removeManuallyEntries);
+	if(strcmp(p->name, "phonebooksort") == 0) sprintf(p->value, "%d", phoneBookSort);
+
 	p++, max_params--, n++;
     }
 
