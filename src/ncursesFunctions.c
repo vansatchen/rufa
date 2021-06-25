@@ -9,11 +9,12 @@
 #include "functions.h"
 
 extern MYSQL_RES *result;
-int rows, col;
+int rows, col, currentPosition = 0, num_rows;
 
 FIELD *field[7], *cfield;
 FORM  *addForm;
 WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin, *addPopup;
+WINDOW *contextPosition, *numberPosition, *calleridPosition, *ipaddressPosition;
 
 void draw_menubar(WINDOW *menubar);
 void draw_titlebar();
@@ -23,6 +24,7 @@ void addMenu();
 static void driver();
 void delPopup();
 void show4wins();
+void scrollWay();
 
 int wins() {
     // Start ncurses finctionality
@@ -77,6 +79,8 @@ int wins() {
 	if(key == KEY_F(1)) helpMenu(rows, col); // Help popup
 	if(key == KEY_F(2)) addMenu(rows, col); // Add popup
 	if(key == KEY_F(3)) delPopup(rows, col); // Delete popup
+	if(key == KEY_DOWN) scrollWay("down");
+	if(key == KEY_UP) scrollWay("up");
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
     } while(key != KEY_F(10));
 
@@ -101,23 +105,29 @@ void show4wins(int rows) {
     wattron(numberWin, A_BOLD);
     wattron(calleridWin, A_BOLD);
     wattron(addressWin, A_BOLD);
-    int num_rows = mysql_num_rows(result);
-    char *numberVar[num_rows];
+    num_rows = mysql_num_rows(result);
+    char *contextVar[num_rows + 1];
+    char *numberVar[num_rows + 1];
+    char *calleridVar[num_rows + 1];
+    char *ipaddressVar[num_rows + 1];
     while((row = mysql_fetch_row(result))) {
         for(int i = 0; i < 4; i++) {
             swprintf(temp, 100, L"%s", row[i]);
             if(i == 0) {
                 mvwaddwstr(contextWin, countRow + 1, 2, temp);
+		contextVar[countRow + 1] = row[0];
             }
             if(i == 1) {
                 mvwaddwstr(numberWin, countRow + 1, 2, temp);
-                numberVar[countRow] = row[1];
+		numberVar[countRow + 1] = row[1];
             }
             if(i == 2) {
                 mvwaddwstr(calleridWin, countRow + 1, 2, temp);
+		calleridVar[countRow + 1] = row[2];
             }
             if(i == 3) {
                 mvwaddwstr(addressWin, countRow + 1, 2, temp);
+		ipaddressVar[countRow + 1] = row[3];
             }
         }
         countRow++;
@@ -126,10 +136,39 @@ void show4wins(int rows) {
     wattroff(numberWin, A_BOLD);
     wattroff(calleridWin, A_BOLD);
     wattroff(addressWin, A_BOLD);
-    mvwprintw(stdscr, rows - 1, 1, "Accounts: %d\tNumber5: %s", num_rows, numberVar[5 - 1]);
+    mvwprintw(stdscr, rows - 1, 1, "Accounts: %d\tNumber5: %s", num_rows, numberVar[5]);
 
     free(temp);
     refresh();
+}
+
+void scrollWay(char *way) {
+    if(currentPosition != 0) {
+	wbkgd(contextPosition, COLOR_PAIR(1));
+	wbkgd(numberPosition, COLOR_PAIR(1));
+	wbkgd(calleridPosition, COLOR_PAIR(1));
+	wbkgd(ipaddressPosition, COLOR_PAIR(1));
+    }
+    if(way == "down") currentPosition++;
+    if(way == "up") currentPosition--;
+    if(currentPosition > num_rows) currentPosition = 1;
+    if(currentPosition < 1) currentPosition = num_rows;
+    contextPosition = derwin(contextWin, 1, 20, currentPosition, 0);
+    numberPosition = derwin(numberWin, 1, 12, currentPosition, 0);
+    calleridPosition = derwin(calleridWin, 1, col - 50, currentPosition, 0);
+    ipaddressPosition = derwin(addressWin, 1, 20, currentPosition, 0);
+
+    wbkgd(contextPosition, COLOR_PAIR(2));
+    wbkgd(numberPosition, COLOR_PAIR(2));
+    wbkgd(calleridPosition, COLOR_PAIR(2));
+    wbkgd(ipaddressPosition, COLOR_PAIR(2));
+    mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t\t");
+    mvwprintw(stdscr, rows - 1, 1, "Current position: %d", currentPosition);
+    refresh();
+    wrefresh(contextWin);
+    wrefresh(numberWin);
+    wrefresh(calleridWin);
+    wrefresh(addressWin);
 }
 
 void helpMenu(int rows, int col) {
