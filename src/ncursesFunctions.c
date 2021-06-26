@@ -11,6 +11,14 @@
 extern MYSQL_RES *result;
 int rows, col, currentPosition = 0, num_rows;
 
+typedef struct {
+    char *contextStr;
+    char *numberStr;
+    char *calleridStr;
+    char *ipaddressStr;
+} Accounts;
+Accounts account[1000];
+
 FIELD *field[7], *cfield;
 FORM  *addForm;
 WINDOW *titlebar, *menubar, *mainWin, *contextWin, *numberWin, *calleridWin, *addressWin, *addPopup;
@@ -70,8 +78,6 @@ int wins() {
     addressWin = derwin(addressWin, rows - 4, 0, 0, 0);
 
     show4wins(rows);
-//    refresh();
-
     wchar_t key;
     do {
 	get_wch(&key);
@@ -82,6 +88,8 @@ int wins() {
 	if(key == KEY_DOWN) scrollWay("down");
 	if(key == KEY_UP) scrollWay("up");
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
+	mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t");
+	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %s", currentPosition, account[currentPosition].numberStr);
     } while(key != KEY_F(10));
 
     delwin(menubar);
@@ -116,18 +124,22 @@ void show4wins(int rows) {
             if(i == 0) {
                 mvwaddwstr(contextWin, countRow + 1, 2, temp);
 		contextVar[countRow + 1] = row[0];
+		account[countRow + 1].contextStr = row[0];
             }
             if(i == 1) {
                 mvwaddwstr(numberWin, countRow + 1, 2, temp);
 		numberVar[countRow + 1] = row[1];
+		account[countRow + 1].numberStr = row[1];
             }
             if(i == 2) {
                 mvwaddwstr(calleridWin, countRow + 1, 2, temp);
 		calleridVar[countRow + 1] = row[2];
+		account[countRow + 1].calleridStr = row[2];
             }
             if(i == 3) {
                 mvwaddwstr(addressWin, countRow + 1, 2, temp);
 		ipaddressVar[countRow + 1] = row[3];
+		account[countRow + 1].ipaddressStr = row[3];
             }
         }
         countRow++;
@@ -136,7 +148,6 @@ void show4wins(int rows) {
     wattroff(numberWin, A_BOLD);
     wattroff(calleridWin, A_BOLD);
     wattroff(addressWin, A_BOLD);
-    mvwprintw(stdscr, rows - 1, 1, "Accounts: %d\tNumber5: %s", num_rows, numberVar[5]);
 
     free(temp);
     refresh();
@@ -162,8 +173,6 @@ void scrollWay(char *way) {
     wbkgd(numberPosition, COLOR_PAIR(2));
     wbkgd(calleridPosition, COLOR_PAIR(2));
     wbkgd(ipaddressPosition, COLOR_PAIR(2));
-    mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t\t");
-    mvwprintw(stdscr, rows - 1, 1, "Current position: %d", currentPosition);
     refresh();
     wrefresh(contextWin);
     wrefresh(numberWin);
