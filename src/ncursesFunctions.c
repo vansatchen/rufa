@@ -109,10 +109,10 @@ void show4wins(int rows) {
     int countRow = 0;
     setlocale(0, "");
     wchar_t* temp = calloc(sizeof(wchar_t), 1000);
-    wattron(contextWin, A_BOLD);
+/*    wattron(contextWin, A_BOLD);
     wattron(numberWin, A_BOLD);
     wattron(calleridWin, A_BOLD);
-    wattron(addressWin, A_BOLD);
+    wattron(addressWin, A_BOLD);*/
     num_rows = mysql_num_rows(result);
     char *contextVar[num_rows + 1];
     char *numberVar[num_rows + 1];
@@ -144,10 +144,10 @@ void show4wins(int rows) {
         }
         countRow++;
     }
-    wattroff(contextWin, A_BOLD);
+/*    wattroff(contextWin, A_BOLD);
     wattroff(numberWin, A_BOLD);
     wattroff(calleridWin, A_BOLD);
-    wattroff(addressWin, A_BOLD);
+    wattroff(addressWin, A_BOLD);*/
 
     free(temp);
     refresh();
