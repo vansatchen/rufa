@@ -12,12 +12,13 @@ extern MYSQL_RES *result;
 int rows, col, currentPosition = 0, num_rows;
 
 typedef struct {
+    int number;
     char *contextStr;
     char *numberStr;
     char *calleridStr;
     char *ipaddressStr;
 } Accounts;
-Accounts account[1000];
+Accounts account[10000];
 
 FIELD *field[7], *cfield;
 FORM  *addForm;
@@ -89,7 +90,7 @@ int wins() {
 	if(key == KEY_UP) scrollWay("up");
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
 	mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t");
-	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %s", currentPosition, account[currentPosition].numberStr);
+	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %s", currentPosition, account[currentPosition].number);
     } while(key != KEY_F(10));
 
     delwin(menubar);
@@ -130,6 +131,7 @@ void show4wins(int rows) {
                 mvwaddwstr(numberWin, countRow + 1, 2, temp);
 		numberVar[countRow + 1] = row[1];
 		account[countRow + 1].numberStr = row[1];
+		account[countRow + 1].number = atoi(row[1]);
             }
             if(i == 2) {
                 mvwaddwstr(calleridWin, countRow + 1, 2, temp);
