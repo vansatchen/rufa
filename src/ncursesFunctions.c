@@ -90,7 +90,7 @@ int wins() {
 	if(key == KEY_UP) scrollWay("up");
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
 	mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t");
-	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %s", currentPosition, account[currentPosition].number);
+	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %d", currentPosition, account[currentPosition].number);
     } while(key != KEY_F(10));
 
     delwin(menubar);
