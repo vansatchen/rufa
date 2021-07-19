@@ -9,7 +9,7 @@
 #include "functions.h"
 
 extern MYSQL_RES *result;
-int rows, col, currentPosition = 0, num_rows;
+int rows, col, currentPosition = 0, num_rows, countRow = 0;
 
 typedef struct {
     int number;
@@ -34,9 +34,9 @@ static void driver();
 void delPopup();
 void show4wins();
 void scrollWay();
+void drawMainWin();
 
-int wins() {
-    // Start ncurses finctionality
+int wins() { // Start ncurses finctionality
     initscr();
     start_color();
     init_pair(1, COLOR_WHITE,COLOR_BLUE);
@@ -46,8 +46,7 @@ int wins() {
     curs_set(0);
     noecho();
     keypad(stdscr, TRUE);
-    // Screen size & background
-    getmaxyx(stdscr, rows, col);
+    getmaxyx(stdscr, rows, col); // Screen size & background
 //    mvwprintw(stdscr, 0, col - 20, "Rows: %d, Col: %d", rows, col);
     // Panel & main window
     titlebar = subwin(stdscr, 1, col, 0, 0);
@@ -79,6 +78,7 @@ int wins() {
     addressWin = derwin(addressWin, rows - 4, 0, 0, 0);
 
     show4wins(rows);
+    drawMainWin();
     wchar_t key;
     do {
 	get_wch(&key);
@@ -91,6 +91,7 @@ int wins() {
 	mvwprintw(stdscr, rows - 1, col - 15, "Selected: %d", key);
 	mvwprintw(stdscr, rows - 1, 1, "\t\t\t\t\t\t\t\t\t\t");
 	mvwprintw(stdscr, rows - 1, 1, "Current position: %d\tNumber: %d", currentPosition, account[currentPosition].number);
+//     mvwprintw(stdscr, 0, col - 25, "Rows: %d  Cols: %d", rows - 5, col);
     } while(key != KEY_F(10));
 
     delwin(menubar);
@@ -107,40 +108,25 @@ int wins() {
 void show4wins(int rows) {
     get4wins();
     MYSQL_ROW row;
-    int countRow = 0;
     setlocale(0, "");
-    wchar_t* temp = calloc(sizeof(wchar_t), 1000);
 /*    wattron(contextWin, A_BOLD);
     wattron(numberWin, A_BOLD);
     wattron(calleridWin, A_BOLD);
     wattron(addressWin, A_BOLD);*/
     num_rows = mysql_num_rows(result);
-    char *contextVar[num_rows + 1];
-    char *numberVar[num_rows + 1];
-    char *calleridVar[num_rows + 1];
-    char *ipaddressVar[num_rows + 1];
     while((row = mysql_fetch_row(result))) {
         for(int i = 0; i < 4; i++) {
-            swprintf(temp, 100, L"%s", row[i]);
             if(i == 0) {
-                mvwaddwstr(contextWin, countRow + 1, 2, temp);
-		contextVar[countRow + 1] = row[0];
 		account[countRow + 1].contextStr = row[0];
             }
             if(i == 1) {
-                mvwaddwstr(numberWin, countRow + 1, 2, temp);
-		numberVar[countRow + 1] = row[1];
 		account[countRow + 1].numberStr = row[1];
 		account[countRow + 1].number = atoi(row[1]);
             }
             if(i == 2) {
-                mvwaddwstr(calleridWin, countRow + 1, 2, temp);
-		calleridVar[countRow + 1] = row[2];
 		account[countRow + 1].calleridStr = row[2];
             }
             if(i == 3) {
-                mvwaddwstr(addressWin, countRow + 1, 2, temp);
-		ipaddressVar[countRow + 1] = row[3];
 		account[countRow + 1].ipaddressStr = row[3];
             }
         }
@@ -150,8 +136,6 @@ void show4wins(int rows) {
     wattroff(numberWin, A_BOLD);
     wattroff(calleridWin, A_BOLD);
     wattroff(addressWin, A_BOLD);*/
-
-    free(temp);
     refresh();
 }
 
@@ -180,6 +164,31 @@ void scrollWay(char *way) {
     wrefresh(numberWin);
     wrefresh(calleridWin);
     wrefresh(addressWin);
+}
+
+void drawMainWin() {
+    wchar_t* tempContext = calloc(sizeof(wchar_t), 1000);
+    wchar_t* tempNumber = calloc(sizeof(wchar_t), 1000);
+    wchar_t* tempCallerid = calloc(sizeof(wchar_t), 1000);
+    wchar_t* tempAddress = calloc(sizeof(wchar_t), 1000);
+    for(int i = 0; i < countRow; i++) {
+	swprintf(tempContext, 100, L"%s", account[i + 1].contextStr);
+	swprintf(tempNumber, 100, L"%s", account[i + 1].numberStr);
+	swprintf(tempCallerid, 100, L"%s", account[i + 1].calleridStr);
+	swprintf(tempAddress, 100, L"%s", account[i + 1].ipaddressStr);
+	mvwaddwstr(contextWin, i + 1, 2, tempContext);
+	mvwaddwstr(numberWin, i + 1, 2, tempNumber);
+	mvwaddwstr(calleridWin, i + 1, 2, tempCallerid);
+	mvwaddwstr(addressWin, i + 1, 2, tempAddress);
+    }
+    wrefresh(contextWin);
+    wrefresh(numberWin);
+    wrefresh(calleridWin);
+    wrefresh(addressWin);
+    free(tempContext);
+    free(tempNumber);
+    free(tempCallerid);
+    free(tempAddress);
 }
 
 void helpMenu(int rows, int col) {

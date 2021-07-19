@@ -409,9 +409,6 @@ void rebootRemotePhone(){
             if(splitAnswer) {
                 splitAnswer = "error";
             }
-        } else {
-	    printf("\033[0;31mUnknown respons\033[0;33m %s\033[0m\n", curlAnswer);
-	    break;
 	}
         if(symbol == '{') { // Check that first symbol is '{'
             splitAnswer = strtok(curlAnswer, ",");
@@ -424,6 +421,9 @@ void rebootRemotePhone(){
                 ++f;
             }
             splitAnswer[i] = '\0';
+        } else {
+            printf("\033[0;31mUnknown response\033[0;33m %s\033[0m\n", curlAnswer);
+            break;
         }
 	printf("Result: \033[0;33m%s\033[0m\n", splitAnswer);
 	if(strcmp(splitAnswer, "error") == 0) {
